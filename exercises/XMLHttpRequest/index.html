@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>My Title</title>
+</head>
+<body>
+<script src="https://www.promisejs.org/polyfills/promise-7.0.4.min.js"></script>
+<script>
+    function get(url) {
+        return new Promise(function (succed, fail) {
+            var req = new XMLHttpRequest();
+            req.open("GET", url, true);
+            req.addEventListener("load", function () {
+                if (req.status < 400)
+                    succed(req.responseText);
+                else
+                    fail(new Error("Request failed: " + req.statusText));
+            });
+            req.addEventListener("error", function () {
+                fail(new Error("Network error"));
+            });
+            req.send(null);
+        });
+    }
+
+    function getJSON(url) {
+        return get(url).then(JSON.parse);
+    }
+
+    function showMessage(msg) {
+        var elt = document.createElement("div");
+        elt.textContent = msg;
+        return document.body.appendChild(elt);
+    }
+/*
+    var loading = showMessage("Loading...");
+    getJSON("example/bert.json").then(function (bert) {
+        return getJSON(bert.spouse);
+    }).then(function (spuse) {
+        return getJSON(spouse.mother);
+    }).then(function (mother) {
+        showMessage("The name is " + mother.name);
+    }).catch(function (error) {
+        showMessage(String(error))
+    }).then(function () {
+        document.body.removeChild(loading);
+    });
+    */
+    function requestAuthor(type) {
+        var req = new XMLHttpRequest();
+        req.open("GET", "http://eloquentjavascript.net/author", false);
+        req.setRequestHeader("accept",type);
+        req.send(null);
+        return req.responseText;
+    }
+
+    var types = ["text/plain",
+        "text/html",
+        "application/json",
+        "application/rainbows+unicorns"];
+
+    types.forEach(function(type) {
+        try {
+            console.log(type + ":\n", requestAuthor(type), "\n");
+        } catch (e) {
+            console.log("Raised error: " + e);
+        }
+    });
+</script>
+</body>
+</html>

@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<script src="sum-of-range.js"></script>
+<script src="reversing-array.js"></script>
+<script src="list.js"></script>
+<script src="deep-comparison.js"></script>
+<script>
+    var array = range(3,10);
+    console.log(array);
+    console.log(reverseArray(array));
+    reverseArrayInPlace(array);
+    console.log(array);
+    var lista = arrayToList([1,2,3,4,7,8]);
+    console.log(lista);
+    console.log(listToArray(lista));
+    var newArray = prepend(15, lista);
+    console.log(newArray);
+    console.log(nth(arrayToList([10, 20, 30]), 1));
+</script>
+</body>
+</html>

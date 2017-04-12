@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<input type="text">
+<div id="wrapper">
+    <div data-tabname="one">Tab one</div>
+    <div data-tabname="two">Tab two</div>
+    <div data-tabname="three">Tab three</div>
+</div>
+<script src="censored-keyboard.js"></script>
+<script src="mouse-trail.js"></script>
+<script src="tabs.js"></script>
+<script>
+    var input = document.querySelector("input");
+    censoredKeyboard(input);
+    //mouseTrail();
+    asTabs(document.querySelector("#wrapper"));
+</script>
+</body>
+</html>

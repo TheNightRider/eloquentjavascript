@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<p>Neki tekst</p>
+<p>One</p>
+<p>Two</p>
+<p>Three</p>
+
+<script>
+    var para = document.body.getElementsByTagName("p");
+    document.body.insertBefore(para[3], para[1]);
+</script>
+<button onclick="replaceImages()">Replace</button>
+<p><img id="cat" src="img/cat.png" alt="Cat" width="100" height="100">
+<img src="img/hat.jpg" alt="Hat" width="100" height="100"></p>
+
+
+<script>
+    var cat = document.getElementById("cat");
+    console.log(cat.src);
+</script>
+
+<script>
+    function replaceImages() {
+        var images = document.body.getElementsByTagName("img");
+        for (var i = images.length - 1; i >= 0; i--){
+            var image = images[i];
+            if (image.alt){
+                var text = document.createTextNode(image.alt);
+                image.parentNode.replaceChild(text, image);
+            }
+        }
+    }
+</script>
+</body>
+</html>

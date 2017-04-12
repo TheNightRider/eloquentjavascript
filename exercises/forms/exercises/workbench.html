@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+
+<textarea id="code">return "hi";</textarea>
+<button id="button">Run</button>
+<pre id="output"></pre>
+
+<script>
+    var code = document.querySelector("#code").textContent;
+    var button = document.querySelector("#button");
+    var output = document.querySelector("#output");
+
+    button.addEventListener("click", function (event) {
+        try {
+            var result = new Function(code)();
+            output.textContent = String(result);
+        } catch (e){
+            output.textContent = "Error: " + e;
+        }
+
+    });
+
+
+
+
+</script>
+</body>
+</html>

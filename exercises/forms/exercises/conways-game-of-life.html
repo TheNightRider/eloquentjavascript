@@ -1,0 +1,123 @@
+<!--Conway’s Game of Life
+
+Conway’s Game of Life is a simple simulation that creates artificial “life” on a grid, each cell of which is either
+live or not. Each generation (turn), the following rules are applied:
+ Any live cell with fewer than two or more than three live neighbors dies.
+ Any live cell with two or three live neighbors lives on to the next generation.
+ Any dead cell with exactly three live neighbors becomes a live cell.
+A neighbor is defined as any adjacent cell, including diagonally adjacent ones.
+Note that these rules are applied to the whole grid at once, not one square at a time. That means the counting of
+neighbors is based on the situation at the start of the generation, and changes happening to neighbor cells during
+this generation should not influence the new state of a given cell.
+Implement this game using whichever data structure you find appropriate. Use Math.random to populate the grid with a
+random pattern initially. Display it as a grid of checkbox fields, with a button next to it to advance to the next
+generation. When the user checks or unchecks the checkboxes, their changes should be included when computing the next
+generation.-->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div id="grid"></div>
+<button id="next">Next generation</button>
+<button id="autorun">Auto run</button>
+
+<script>
+    var grid = document.querySelector("#grid");
+    var next = document.querySelector("#next");
+    var auto = document.querySelector("#autorun");
+    var run = null;
+
+    function generateCells() {
+        var cells = [];
+        for (var x = 0; x < 20; x++) {
+            for (var y = 0; y < 20; y++) {
+                var cell = document.createElement("input");
+                cell.type = "checkbox";
+                if (Math.random() > 0.5)
+                    cell.checked = true;
+                cells.push(cell);
+            }
+        }
+        return cells;
+    }
+
+    function showCells(cells) {
+        var table = document.createElement("table");
+        for (var x = 0; x < 20; x++) {
+            var tr = document.createElement("tr");
+            for (var y = 0; y < 20; y++) {
+                var td = document.createElement("td");
+                td.appendChild(cells[y + x * 20]);
+                tr.appendChild(td);
+            }
+            table.appendChild(tr);
+        }
+        grid.appendChild(table);
+    }
+
+    function numOfNeighbors(cells, n) {
+        var result = 0;
+        var x = Math.floor(n / 20), y = n % 20;
+        for (var i = Math.max(0, x-1); i <= Math.min(19, x+1); i++) {
+            for (var j = Math.max(0, y - 1); j <= Math.min(19, y + 1); j++) {
+                if (j == y && i == x)
+                    continue;
+                if (cells[j + i * 20].checked == true)
+                    result++;
+            }
+        }
+        return result;
+    }
+
+    function turn(cells) {
+        var newCells = [];
+        for (var i = 0; i < cells.length; i++) {
+            var cell = cells[i];
+            var newCell = document.createElement("input");
+            newCell.type = "checkbox";
+            var neighbors = numOfNeighbors(cells, i);
+            if (cell.checked == true && (neighbors < 2 || neighbors > 3))
+                newCell.checked = false;
+
+            if (cell.checked == true && (neighbors == 2 || neighbors == 3))
+                newCell.checked = true;
+
+            if (cell.checked == false && neighbors == 3)
+                newCell.checked = true;
+
+            newCells.push(newCell);
+        }
+        return newCells;
+    }
+    if (grid.childNodes.length == 0) {
+        var cells = generateCells();
+        showCells(cells);
+    }
+
+    next.addEventListener("click", function (event) {
+        var cells = document.querySelectorAll("input");
+        var newGen = turn(cells);
+        grid.textContent = "";
+        showCells(newGen);
+    });
+
+    auto.addEventListener("click", function (event) {
+        if (run){
+            clearInterval(run);
+            run = null;
+        } else {
+            run = setInterval(function () {
+                var cells = document.querySelectorAll("input");
+                var newGen = turn(cells);
+                grid.textContent = "";
+                showCells(newGen);
+            }, 400);
+        }
+    });
+</script>
+</body>
+</html>

@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<html>
+    <head>
+        <title>Exercises Canvas</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    </head>
+    <body>
+        <script>
+            function drawTrapezoid(posX, posY, widthTop, height, widthBottom) {
+                var trapezoid = document.createElement("canvas");
+                document.body.appendChild(trapezoid);
+                var trx = trapezoid.getContext("2d");
+                var diff = Math.floor((widthBottom - widthTop) / 2);
+                widthTop += posX;
+                height += posY;
+                trx.beginPath();
+                trx.moveTo(posX, posY);
+                trx.lineTo(widthTop, posY);
+                trx.lineTo(widthTop + diff, height);
+                trx.lineTo(posX - diff, height);
+                trx.lineTo(posX, posY);
+                trx.stroke();
+            }
+            //drawTrapezoid(80,10, 70, 50, 150);
+
+            function redDiamond(size) {
+                var diamond = document.createElement("canvas");
+                document.body.appendChild(diamond);
+                var dx = diamond.getContext("2d");
+                dx.fillStyle = "red";
+                dx.translate(size, 0);
+                dx.rotate(0.25 * Math.PI);
+
+                dx.fillRect(0, 0, size, size);
+
+            }
+            //redDiamond(70);
+
+            function zigZag(length) {
+                var zigzag = document.createElement("canvas");
+                document.body.appendChild(zigzag);
+                var zx = zigzag.getContext("2d");
+
+                zx.beginPath();
+                zx.moveTo(10, 10);
+                for (var y = 20; y <= length; y += 10) {
+                    zx.lineTo(100, y);
+                    y += 10;
+                    zx.lineTo(10, y);
+                }
+                zx.stroke();
+            }
+            //zigZag(100);
+
+            function spiral(x, y) {
+                var radius = 50;
+                var xCenter = x + radius, yCenter = y + radius;
+
+                var spi = document.createElement("canvas");
+                document.body.appendChild(spi);
+                var sx = spi.getContext("2d");
+
+                sx.beginPath();
+                sx.moveTo(xCenter, yCenter);
+                for (var i = 0; i < 300; i++) {
+                    var angle = i * Math.PI / 30;
+                    var dist = radius * i / 300;
+                    sx.lineTo(xCenter + Math.cos(angle) * dist, yCenter + Math.sin(angle) * dist);
+                }
+                sx.stroke();
+            }
+            //spiral(140,20);
+
+            function star(x, y) {
+                var radius = 50;
+                var xCenter = x + radius, yCenter = y + radius;
+
+                var spi = document.createElement("canvas");
+                document.body.appendChild(spi);
+                var sx = spi.getContext("2d");
+
+                sx.beginPath();
+                sx.moveTo(xCenter, yCenter);
+                for (var i = 1; i <= 9; i++) {
+                    var angle = i * Math.PI / 4;
+                    sx.quadraticCurveTo(xCenter, yCenter,
+                            xCenter + Math.cos(angle) * radius,
+                            yCenter + Math.sin(angle) * radius);
+                }
+                sx.fillStyle = "gold";
+                sx.fill();
+            }
+            //star(140,20);
+
+            var results = [
+                {name: "Satisfied", count: 1043, color: "lightblue"},
+                {name: "Neutral", count: 563, color: "lightgreen"},
+                {name: "Unsatisfied", count: 510, color: "pink"},
+                {name: "No comment", count: 175, color: "silver"}
+            ];
+            
+            var canvas = document.createElement("canvas");
+            canvas.width = "600";
+            canvas.height = "300";
+            document.body.appendChild(canvas);
+            var cx = canvas.getContext("2d");
+            
+            var total = results.reduce(function(sum, choice){
+                return sum + choice.count;
+            }, 0);
+            
+            var currentAngle = -0.5 * Math.PI;
+            var centerX = 300, centerY = 150;
+            results.forEach(function(result){
+                var sliceAngle = (result.count / total) * 2 * Math.PI;
+                cx.beginPath();
+                cx.arc(centerX,centerY, 100, currentAngle, currentAngle + sliceAngle);
+                var middleAngle = currentAngle + 0.5 * sliceAngle;
+                var textX = Math.cos(middleAngle) * 120 + centerX;
+                var textY = Math.sin(middleAngle) * 120 + centerY;
+                cx.textBaseLine = "middle";
+                if (Math.cos(middleAngle) > 0)
+                    cx.textAlign = "left";
+                else
+                    cx.textAlign = "right";
+                cx.font = "15px sans-serif";
+                cx.fillStyle = "black";
+                cx.fillText(result.name, textX, textY);
+                
+                currentAngle += sliceAngle;
+                cx.lineTo(centerX, centerY);
+                cx.fillStyle = result.color;
+                cx.fill();
+            });
+        </script>
+    </body>
+</html>

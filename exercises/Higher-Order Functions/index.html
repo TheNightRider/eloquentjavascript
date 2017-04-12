@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<script src="flattening.js"></script>
+<script src="ancestry.js"></script>
+<script src="mother-age-diff.js"></script>
+<script src="life-expectancy.js"></script>
+<script>
+    var arrays = flatten([1, 2, 3], [4, 5], [6]);
+    //console.log(arrays);
+    var ancestry = JSON.parse(ANCESTRY_FILE);
+    console.log(calculateAgeDif(ancestry));
+    console.log(averageAgePerCentury(ancestry));
+</script>
+</body>
+</html>

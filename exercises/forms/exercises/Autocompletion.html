@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Autocompletion</title>
+</head>
+<body>
+<input type="text" id="field">
+<div id="suggestions" style="cursor: pointer"></div>
+
+<script>
+
+    var suggestions = [];
+    for (var name in window)
+        suggestions.push(name);
+    
+    var suggestionsField = document.querySelector("#suggestions");
+    var oldSuggestionsField = suggestionsField;
+    var inputField = document.querySelector("#field");
+    
+    inputField.addEventListener("keypress", function (event) {
+        var inputText = inputField.value + String.fromCharCode(event.charCode);
+        var results = checkSuggestions(inputText);
+        removeSuggestions();
+        printSuggestions(results);
+    });
+    
+    function checkSuggestions(inputText) {
+        var results = [];
+        suggestions.forEach(function (suggestion) {
+            var showSuggestion = true;
+            for (var i = 0; i < inputText.length; i++){
+                if (inputText[i] != suggestion[i])
+                    showSuggestion = false;
+            }
+            
+            if (showSuggestion){
+                results.push(suggestion);
+            }
+        });
+        return results;
+    }
+    
+    function printSuggestions(results) {
+        results.forEach(function (outputText) {
+            var outputDiv = document.createElement("div");
+            suggestionsField.appendChild(outputDiv);
+            outputDiv.textContent = outputText;
+            outputDiv.addEventListener("click", function (event) {
+                var length = inputField.value.length;
+                inputField.value += outputText.slice(length);
+                removeSuggestions();
+            });
+        });
+    }
+
+    function removeSuggestions() {
+        suggestionsField.textContent = "";
+    }
+</script>
+</body>
+</html>
